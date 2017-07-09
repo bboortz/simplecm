@@ -2,7 +2,6 @@ package main
 
 import (
     osuser "os/user"
-	"os"
     "strconv"
 )
 
@@ -29,6 +28,7 @@ type User interface {
 type UserBuilder interface {
 	SetUid(int) UserBuilder
 	FromCurrentUser() UserBuilder
+	FromUser(string) UserBuilder
 	Build() User
 }
 
@@ -46,17 +46,24 @@ func (b *userBuilder) SetUid(uid int) UserBuilder {
 }
 
 func (b *userBuilder) FromCurrentUser() UserBuilder {
-	currentUser, _ := osuser.Current()
-	//uid := strconv.Atoi(currentUser.Uid)
-	// b.uid = strconv.Atoi( currentUser.Uid )
-	b.uid = os.Getuid()
-	b.gid = os.Getgid()
-	log.Debugf("uid: <%d>", b.uid)
-	log.Debugf("gid: <%d>", b.gid)
-	b.username = currentUser.Username
-	currentGroup, _ := osuser.LookupGroupId( strconv.Itoa(b.gid) )
-	b.groupname = currentGroup.Name
-	b.homeDir = currentUser.HomeDir
+	theUser, _ := osuser.Current()
+	theGroup, _ := osuser.LookupGroupId( strconv.Itoa(b.gid) )
+	b.uid, _ = strconv.Atoi(theUser.Uid)
+	b.gid, _ = strconv.Atoi(theUser.Gid)
+	b.username = theUser.Username
+	b.groupname = theGroup.Name
+	b.homeDir = theUser.HomeDir
+	return b
+}
+
+func (b *userBuilder) FromUser(username string) UserBuilder {
+	theUser, _ := osuser.Lookup(username)
+	theGroup, _ := osuser.LookupGroupId( strconv.Itoa(b.gid) )
+	b.uid, _ = strconv.Atoi(theUser.Uid)
+	b.gid, _ = strconv.Atoi(theUser.Gid)
+	b.username = theUser.Username
+	b.groupname = theGroup.Name
+	b.homeDir = theUser.HomeDir
 	return b
 }
 
@@ -89,6 +96,7 @@ func (u *user) LogUser() {
 
 func (u *user) BecomeUser() {
 	log.Debugf("becoming user <%s> with uid <%d> ...", u.username, u.uid )
+	changeUser(u.uid, u.gid, u.homeDir)
 }
 
 func (u *user) CheckRoot() {

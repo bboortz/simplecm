@@ -2,10 +2,36 @@ package main
 
 import (
 	"syscall"
-//	"os"
+	"os"
 	osuser "os/user"
 	"strconv"
 )
+
+
+func changeUser(uid int, gid int, path string) {
+	// set uid
+	if syscall.Getuid() != uid {
+		_, _, err := syscall.Syscall(syscall.SYS_SETUID, uintptr(uid), 0, 0)
+		if err != 0 { 
+			log.Fatalf("Failed to syscall SYS_SETUID(%d): %v", uid, err)
+		}
+	}
+
+	// set gid
+/*
+	if syscall.Getgid() != gid {
+		_, _, err := syscall.Syscall(syscall.SYS_SETGID, uintptr(gid), 0, 0)
+		if err != 0 { 
+			log.Fatalf("Failed to syscall SYS_SETGID(%d): %v", gid, err)
+		}
+	}
+*/
+
+	// chdir
+	if err := os.Chdir(path); err != nil {
+		log.Fatalf("Failed to Chdir to %q: %v", path, err)
+	}
+}
 
 func setUserPrivileges(username string, groupname string, path string) {
 	user, err := osuser.Lookup(username)

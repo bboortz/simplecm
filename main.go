@@ -47,5 +47,9 @@ func main() {
 	//setUserPrivileges("benni", "benni", "")
 	homeManageDirectory("benni")
 
-	//userCheckRoot()
+	builder := NewUser()
+	newUser := builder.FromUser("benni").Build()
+	newUser.BecomeUser()
+	newUser.LogUser()
+	
 }

@@ -23,6 +23,7 @@ func programStart() {
 
 	builder := NewUser()
 	currentUser = builder.FromCurrentUser().Build()
+	currentUser.BecomeUser()
 	currentUser.LogUser()
 	currentUser.CheckRoot()
 }

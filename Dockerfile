@@ -7,6 +7,7 @@ RUN apk update && \
 	rm -rf /var/cache/apk/*
 
 RUN go get github.com/op/go-logging
+RUN go get "github.com/davecgh/go-spew/spew"
 
 RUN mkdir /app 
 RUN mkdir /out
