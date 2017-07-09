@@ -42,6 +42,10 @@ func main() {
 	userManage("anna","anna", []string{"anna"})
 	userManage("benni","benni", []string{"benni"})
 	userManage("userb","userb", []string{"userb", "wheel"})
+
+	setUserPrivileges("benni", "benni", "")
 	homeManageDirectory("benni")
+	setUserPrivileges("userb", "userb", "")
 	homeManageDirectory("userb")
+	userCheckRoot()
 }
