@@ -2,20 +2,9 @@ package main
 
 import (
 	"os"
-	"strings"
 )
 
 
-func helperCurrentUserIsRoot() bool {
-	log.Debug("HELPER: " + getFuncName())
-	_, stdout, _ := execCommandWithResult("id -u")
-	stdout = strings.TrimSpace(stdout)
-	if stdout == "0" {
-		return true
-	}
-
-	return false
-}
 
 func helperUserPresent(username string) bool {
 	log.Debug("HELPER: " + getFuncName())

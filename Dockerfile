@@ -12,8 +12,8 @@ RUN mkdir /app
 RUN mkdir /out
 ADD . /app
 WORKDIR /app 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o scm .
-#RUN GOOS=linux go build --ldflags "-linkmode external -extldflags -static" -o scm .
+#RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o scm .
+RUN GOOS=linux go build --ldflags "-linkmode external -extldflags -static" -o scm .
 #RUN go build -a -installsuffix cgo -o scm .
 RUN file scm
 

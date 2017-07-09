@@ -12,13 +12,15 @@ func setUserPrivileges(username string, groupname string, path string) {
 	if err != nil {
 		log.Fatalf("Failed to lookup username %s: %v", username, err)
 	}
+/*
 	group, err := osuser.LookupGroup(groupname)
 	if err != nil {
 		log.Fatalf("Failed to lookup groupname %s: %v", groupname, err)
 	}
+*/
 
 	uid, err := strconv.Atoi(user.Uid)
-	gid, err := strconv.Atoi(group.Gid)
+	// gid, err := strconv.Atoi(group.Gid)
 
 
 	// set uid
@@ -30,12 +32,14 @@ func setUserPrivileges(username string, groupname string, path string) {
 	}
 
 	// set gid
+/*
 	if syscall.Getgid() != gid {
 		_, _, err := syscall.Syscall(syscall.SYS_SETGID, uintptr(gid), 0, 0)
 		if err != 0 { 
 			log.Fatalf("Failed to syscall SYS_SETGID(%d): %v", gid, err)
 		}
 	}
+*/
 
 	// chdir
 /*

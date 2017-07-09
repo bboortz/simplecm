@@ -7,13 +7,12 @@ import (
 var debug bool = false
 var globalExitCode = 0
 var detectedOS string
+var currentUser User 
 
 
 func main() {
 	programStart()
 	defer programEnd()
-
-	userCheckRoot()
 
 	osInstallPackages(
 		"bash",
@@ -43,9 +42,10 @@ func main() {
 	userManage("benni","benni", []string{"benni"})
 	userManage("userb","userb", []string{"userb", "wheel"})
 
-	setUserPrivileges("benni", "benni", "")
-	homeManageDirectory("benni")
-	setUserPrivileges("userb", "userb", "")
+	//setUserPrivileges("userb", "userb", "")
 	homeManageDirectory("userb")
-	userCheckRoot()
+	//setUserPrivileges("benni", "benni", "")
+	homeManageDirectory("benni")
+
+	//userCheckRoot()
 }
