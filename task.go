@@ -63,15 +63,28 @@ func timeSync() {
 	}
 }
 
-func userManage(username string) {
+func userManage(username string, loginGroup string, groups []string) {
 	log.Info("TASK: " + getFuncName())
-	var group string = username
+	groupManage(loginGroup)
+	for _, g := range groups {
+		groupManage(g)
+	}
 	userPresent := helperUserPresent(username)
 	if !userPresent {
-		execCommandWithOutput("groupadd " + group)
-		execCommandWithOutput("useradd --create-home --gid " + group + " " + username)
+		execCommandWithOutput("useradd --create-home --gid " + loginGroup + " " + username)
+	}
+	var groupCommaSep string = strings.Join(groups[:], ",")
+	execCommandWithOutput("usermod --gid " + loginGroup + " --groups " + groupCommaSep + " " + loginGroup)
+}
+
+func groupManage(groupname string) {
+	log.Info("TASK: " + getFuncName())
+	groupPresent := helperGroupPresent(groupname)
+	if !groupPresent {
+		execCommandWithOutput("groupadd " + groupname)
 	}
 }
+
 
 func homeManageDirectory(username string) {
 	log.Info("TASK: " + getFuncName())

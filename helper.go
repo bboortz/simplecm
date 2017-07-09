@@ -15,6 +15,16 @@ func helperUserPresent(username string) bool {
 	return false
 }
 
+func helperGroupPresent(username string) bool {
+	log.Debug("HELPER: " + getFuncName())
+	exitCode := execCommandWithExitCode("egrep --quiet ^" + username + ": /etc/group")
+	if exitCode == 0 {
+		return true
+	}
+
+	return false
+}
+
 func helperFileExists(path string) bool {
 	if _, err := os.Stat(path); err != nil {
 		if os.IsNotExist(err) {

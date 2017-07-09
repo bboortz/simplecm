@@ -29,6 +29,7 @@ func main() {
 		"python-pip",
 		"screen",
 		"strace",
+		"tree",
 //		unattended-upgrades",
 		"vim")
 	osUpdate()
@@ -36,8 +37,9 @@ func main() {
 
 	timeSync()
 
-	userManage("anna")
-	userManage("benni")
-	userManage("testuser")
+	userManage("anna","anna", []string{"anna"})
+	userManage("benni","benni", []string{"benni"})
+	userManage("userb","userb", []string{"userb", "wheel"})
 	homeManageDirectory("benni")
+	homeManageDirectory("userb")
 }
