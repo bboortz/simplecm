@@ -13,6 +13,8 @@ func main() {
 	programStart()
 	defer programEnd()
 
+	userCheckRoot()
+
 	osInstallPackages(
 		"bash",
 		"fail2ban",

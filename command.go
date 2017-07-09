@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os/exec"
 	"syscall"
@@ -22,6 +23,34 @@ func execCommand(app string, arg ...string) {
 	fmt.Printf("%s\n", string(stdoutStderr))
 }
 */
+
+
+func execCommandWithResult(command string) (int, string, string) {
+	var exitCode int = 0
+	//var waitStatus syscall.WaitStatus
+
+	// run command
+	log.Debug("CMD: " + command)
+	cmd := exec.Command("/bin/sh", "-c", command)
+	var stdoutBuf, stderrBuf bytes.Buffer
+	cmd.Stdout = &stdoutBuf
+	cmd.Stderr = &stderrBuf
+	err := cmd.Run()
+	if err != nil {
+	    log.Fatal(err)
+	}
+
+	// convert buffer to string
+	stdoutStr := stdoutBuf.String()
+	stderrStr := stderrBuf.String()
+
+	// retrieve exit code
+	waitStatus := cmd.ProcessState.Sys().(syscall.WaitStatus)
+	exitCode = waitStatus.ExitStatus()
+
+
+	return exitCode, stdoutStr, stderrStr
+}
 
 func execCommandWithOutput(command string) {
 	// run command

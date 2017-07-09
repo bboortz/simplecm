@@ -4,6 +4,7 @@ import (
 	"strings"
 )
 
+
 func osUpdate() {
 	log.Info("TASK: " + getFuncName())
 	switch detectedOS {
@@ -61,6 +62,13 @@ func timeSync() {
 			log.Error("Unknown OS detected: " + detectedOS)
 			programExit(1)
 	}
+}
+
+func userCheckRoot() {
+	if ! helperCurrentUserIsRoot() {
+		log.Error("You must run this program as user root!")
+		programExit(1)
+	}	
 }
 
 func userManage(username string, loginGroup string, groups []string) {
