@@ -9,3 +9,15 @@ simplecm is a simple configuration management
 ## usage
 
 * sudo ./scm
+
+## architecture
+
+   
+main
+|			|	|	|	|
+task			start	exit	logger	reflect
+|	|
+|	helper
+|	|
+command
+

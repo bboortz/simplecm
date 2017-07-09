@@ -26,8 +26,6 @@ func execCommand(app string, arg ...string) {
 
 
 func execCommandWithResult(command string) (int, string, string) {
-	var exitCode int = 0
-	//var waitStatus syscall.WaitStatus
 
 	// run command
 	log.Debug("CMD: " + command)
@@ -46,48 +44,28 @@ func execCommandWithResult(command string) (int, string, string) {
 
 	// retrieve exit code
 	waitStatus := cmd.ProcessState.Sys().(syscall.WaitStatus)
-	exitCode = waitStatus.ExitStatus()
+	exitCode := waitStatus.ExitStatus()
+	log.Debug(fmt.Sprintf("EXIT CODE: %d", exitCode))
 
 
 	return exitCode, stdoutStr, stderrStr
 }
 
 func execCommandWithOutput(command string) {
-	// run command
-	log.Debug("CMD: " + command)
-	cmd := exec.Command("/bin/sh", "-c", command)
-	var waitStatus syscall.WaitStatus
-	var exitCode int
-	stdoutStderr, err := cmd.CombinedOutput()
-
-	// retrieve exit code
-	waitStatus = cmd.ProcessState.Sys().(syscall.WaitStatus)
-	exitCode = waitStatus.ExitStatus()
-	log.Debug(fmt.Sprintf("EXIT CODE: %d", exitCode))
+	exitCode, stdout, stderr := execCommandWithResult(command)
 
 	// print error
-	if err != nil {
-		fmt.Printf("%s\n", string(stdoutStderr))
-		log.Error("ERROR: " + err.Error())
+	if exitCode != 0 {
 		log.Error(fmt.Sprintf("program exited with exit code %d", exitCode))
+		log.Error(stderr)
 		programExit(exitCode)
 	}
 
-	fmt.Printf("%s\n", string(stdoutStderr))
+	fmt.Printf("%s\n", string(stdout))
 }
 
 func execCommandWithExitCode(command string) int {
-	var result int = 0
-	// run command
-	log.Debug("CMD: " + command)
-	cmd := exec.Command("/bin/sh", "-c", command)
-	var waitStatus syscall.WaitStatus
-	cmd.Run()
+	exitCode, _, _ := execCommandWithResult(command)
 
-	// retrieve exit code
-	waitStatus = cmd.ProcessState.Sys().(syscall.WaitStatus)
-	result = waitStatus.ExitStatus()
-	log.Debug(fmt.Sprintf("EXIT CODE: %d", result))
-
-	return result
+	return exitCode
 }
