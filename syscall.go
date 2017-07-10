@@ -8,24 +8,29 @@ import (
 )
 
 
-func changeUser(uid int, gid int, path string) {
-	// set uid
-	if syscall.Getuid() != uid {
-		_, _, err := syscall.Syscall(syscall.SYS_SETUID, uintptr(uid), 0, 0)
-		if err != 0 { 
-			log.Fatalf("Failed to syscall SYS_SETUID(%d): %v", uid, err)
-		}
-	}
+func changeUser(uid int, gid int, groupids []int, path string) {
+	var err error
 
 	// set gid
-/*
 	if syscall.Getgid() != gid {
-		_, _, err := syscall.Syscall(syscall.SYS_SETGID, uintptr(gid), 0, 0)
-		if err != 0 { 
-			log.Fatalf("Failed to syscall SYS_SETGID(%d): %v", gid, err)
+		err = syscall.Setregid(gid, 0)
+		if err != nil { 
+			log.Fatalf("Failed to syscall SYS_SETREGID(%d): %v", gid, err)
+		}
+		err = syscall.Setgroups(groupids)
+		if err != nil { 
+			log.Fatalf("Failed to syscall SYS_SETGROUPS(%d): %v", gid, err)
 		}
 	}
-*/
+	
+
+	// set uid
+	if syscall.Getuid() != uid && syscall.Geteuid() != uid {
+		err = syscall.Setreuid(uid, 0)
+		if err != nil { 
+			log.Fatalf("Failed to syscall SYS_SETREUID(%d): %v", uid, err)
+		}
+	}
 
 	// chdir
 	if err := os.Chdir(path); err != nil {

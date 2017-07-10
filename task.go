@@ -64,6 +64,11 @@ func timeSync() {
 	}
 }
 
+func userId() {
+	log.Info("TASK: " + getFuncName())
+	execCommandWithOutput("id")
+}
+
 func userManage(username string, loginGroup string, groups []string) {
 	log.Info("TASK: " + getFuncName())
 	groupManage(loginGroup)

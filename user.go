@@ -3,6 +3,7 @@ package main
 import (
     osuser "os/user"
     "strconv"
+	"syscall"
 )
 
 
@@ -20,7 +21,7 @@ const (
 
 type User interface {
 	LogUser() 
-	BecomeUser() 
+	BecomeUser() User
 	CheckRoot() 
 	IsRoot() bool
 }
@@ -33,10 +34,11 @@ type UserBuilder interface {
 }
 
 type userBuilder struct {
-	username string
 	uid int
-	groupname string
 	gid int
+	username string
+	groupname string
+	groupids []int
 	homeDir string
 }
 
@@ -52,6 +54,8 @@ func (b *userBuilder) FromCurrentUser() UserBuilder {
 	b.gid, _ = strconv.Atoi(theUser.Gid)
 	b.username = theUser.Username
 	b.groupname = theGroup.Name
+	groupids, _ := theUser.GroupIds()
+	b.groupids = convertStringArrayToIntArray( groupids )
 	b.homeDir = theUser.HomeDir
 	return b
 }
@@ -63,6 +67,8 @@ func (b *userBuilder) FromUser(username string) UserBuilder {
 	b.gid, _ = strconv.Atoi(theUser.Gid)
 	b.username = theUser.Username
 	b.groupname = theGroup.Name
+	groupids, _ := theUser.GroupIds()
+	b.groupids = convertStringArrayToIntArray( groupids )
 	b.homeDir = theUser.HomeDir
 	return b
 }
@@ -78,6 +84,7 @@ func (b *userBuilder) Build() User {
 		gid: b.gid,
 		username: b.username,
 		groupname: b.groupname,
+		groupids: b.groupids,
 		homeDir: b.homeDir,
 	}
 }
@@ -87,16 +94,20 @@ type user struct {
 	uid int
 	groupname string
 	gid int
+	groupids []int
 	homeDir string
 }
 
 func (u *user) LogUser() {
-	log.Infof("user = %s, uid = %d, loginGroup = %s, gid = %d", u.username, u.uid, u.groupname, u.gid )
+	log.Infof("user = %s, uid = %d, euid = %d, loginGroup = %s, gid = %d, egid = %d", u.username, u.uid, syscall.Geteuid(), u.groupname, u.gid, syscall.Getegid() )
 }
 
-func (u *user) BecomeUser() {
+func (u *user) BecomeUser() User {
 	log.Debugf("becoming user <%s> with uid <%d> ...", u.username, u.uid )
-	changeUser(u.uid, u.gid, u.homeDir)
+	changeUser(u.uid, u.gid, u.groupids, u.homeDir)
+	u.LogUser()
+
+	return u
 }
 
 func (u *user) CheckRoot() {

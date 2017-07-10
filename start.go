@@ -21,9 +21,6 @@ func programStart() {
 	detectedOS = helperDetectOS()
 	log.Debug("OS: " + detectedOS)
 
-	builder := NewUser()
-	currentUser = builder.FromCurrentUser().Build()
-	currentUser.BecomeUser()
-	currentUser.LogUser()
+	currentUser = NewUser().FromCurrentUser().Build().BecomeUser()
 	currentUser.CheckRoot()
 }

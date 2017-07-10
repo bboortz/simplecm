@@ -42,14 +42,14 @@ func main() {
 	userManage("benni","benni", []string{"benni"})
 	userManage("userb","userb", []string{"userb", "wheel"})
 
-	//setUserPrivileges("userb", "userb", "")
+	currentUser = NewUser().FromUser("userb").Build().BecomeUser()
+ 	userId()
 	homeManageDirectory("userb")
-	//setUserPrivileges("benni", "benni", "")
+
+	currentUser = NewUser().FromUser("benni").Build().BecomeUser()
+ 	userId()
 	homeManageDirectory("benni")
 
-	builder := NewUser()
-	newUser := builder.FromUser("benni").Build()
-	newUser.BecomeUser()
-	newUser.LogUser()
+	
 	
 }
