@@ -1,55 +1,60 @@
 package main
 
 import (
+	"./helper"
+	"./task"
+	"./user"
 )
 
-
-var debug bool = false
-var globalExitCode = 0
-var detectedOS string
-var currentUser User 
-
-
 func main() {
-	programStart()
-	defer programEnd()
+	helper.ProgramStart()
+	defer helper.ProgramEnd()
 
-	osInstallPackages(
+	var t = task.NewTask().Build()
+
+	t.OsInstallPackages(
 		"bash",
+		"dosbox",
 		"fail2ban",
 		"git",
 		"gcc",
+		"gnutls",
+		"go",
+		"libpulse",
 		"libreoffice-fresh",
 		"libreoffice-fresh-en-GB",
 		"libreoffice-fresh-de",
+		"lib32-gnutls",
 		"lsof",
 		"make",
+		"mono",
 		"ntp",
 		"python",
 		"python-virtualenv",
 		"python-pip",
+		"q4wine",
 		"screen",
 		"strace",
 		"tree",
-//		unattended-upgrades",
-		"vim")
-	osUpdate()
-	osCleanup()
+		"vim",
+		"wine",
+		"winetricks",
+		"wine-mono")
+	t.OsUpdate()
+	t.OsCleanup()
 
-	timeSync()
+	t.TimeSync()
 
-	userManage("anna","anna", []string{"anna"})
-	userManage("benni","benni", []string{"benni"})
-	userManage("userb","userb", []string{"userb", "wheel"})
+	t.UserManage("anna", "anna", []string{"anna"})
+	t.UserManage("benni", "benni", []string{"benni"})
+	t.UserManage("userb", "userb", []string{"userb", "wheel"})
 
-	currentUser = NewUser().FromUser("userb").Build().BecomeUser()
- 	userId()
-	homeManageDirectory("userb")
+	user.NewUser().FromUser("userb").Build().BecomeUser()
+	t.ShowUser()
+	t.HomeManageDirectory("userb")
 
-	currentUser = NewUser().FromUser("benni").Build().BecomeUser()
- 	userId()
-	homeManageDirectory("benni")
+	user.NewUser().FromUser("benni").Build().BecomeUser()
+	t.ShowUser()
+	t.HomeManageDirectory("benni")
 
-	
-	
 }
