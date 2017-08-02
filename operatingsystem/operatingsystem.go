@@ -8,11 +8,11 @@ import (
 var log = logging.MustGetLogger("/operatingsystem")
 
 func init() {
-	logging.SetLevel(logging.INFO, "/operatingsystem")
+	logging.SetLevel(logging.DEBUG, "/operatingsystem")
 
 	var logBackend = logging.NewLogBackend(os.Stdout, "", 0)
 	var leveledBackend = logging.AddModuleLevel(logBackend)
-	leveledBackend.SetLevel(logging.NOTICE, "")
+	leveledBackend.SetLevel(logging.DEBUG, "")
 	logging.SetBackend(logBackend)
 }
 

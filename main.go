@@ -40,6 +40,8 @@ func main() {
 		"wine",
 		"winetricks",
 		"wine-mono")
+	t.OsUninstallPackages(
+		"vi")
 	t.OsUpdate()
 	t.OsCleanup()
 

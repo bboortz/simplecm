@@ -12,12 +12,13 @@ var log = logging.MustGetLogger("task")
 var detectedOS string = "linux-archlinux"
 
 func init() {
-	logging.SetLevel(logging.INFO, "")
+	//	logging.SetLevel(logging.INFO, "")
 }
 
 type Task interface {
 	OsUpdate()
 	OsInstallPackages(packages ...string)
+	OsUninstallPackages(packages ...string)
 	OsCleanup(packages ...string)
 	TimeSync()
 	ShowUser()
@@ -55,7 +56,7 @@ func (o *task) OsUpdate() {
 		operatingsystem.ExecCommand("unattended-upgrades -v")
 		operatingsystem.ExecCommand("apt-get -y dist-upgrade")
 	case "linux-archlinux":
-		operatingsystem.ExecCommand("pacman --noconfirm -Syu")
+		operatingsystem.ExecCommand("pacman --noconfirm --sync --refresh --sysupgrade")
 	default:
 		log.Error("Unknown OS detected: " + detectedOS)
 		helper.ProgramExit(1)
@@ -69,11 +70,29 @@ func (o *task) OsInstallPackages(packages ...string) {
 		operatingsystem.ExecCommand("apt-get update")
 		operatingsystem.ExecCommand("apt-get -y install " + strings.Join(packages[:], " "))
 	case "linux-archlinux":
-		operatingsystem.ExecCommand("pacman --noconfirm -Sy")
-		operatingsystem.ExecCommand("pacman --noconfirm -S --needed " + strings.Join(packages[:], " "))
+		operatingsystem.ExecCommand("pacman --noconfirm --sync --refresh ")
+		operatingsystem.ExecCommand("pacman --noconfirm --sync --needed " + strings.Join(packages[:], " "))
 	default:
 		log.Error("Unknown OS detected: " + detectedOS)
 		helper.ProgramExit(1)
+	}
+}
+
+func (o *task) OsUninstallPackages(packages ...string) {
+	log.Info("TASK: " + reflect.GetFuncName())
+	for _, p := range packages {
+		switch detectedOS {
+		case "linux-archlinux":
+			var ret int
+			ret, _, _ = operatingsystem.ExecCommandWithoutErrCheck("pacman --query --installed " + p)
+			log.Debugf("ret: %i", ret)
+			if ret == 0 {
+				operatingsystem.ExecCommand("pacman --noconfirm --remove --recursive " + p)
+			}
+		default:
+			log.Error("Unknown OS detected: " + detectedOS)
+			helper.ProgramExit(1)
+		}
 	}
 }
 

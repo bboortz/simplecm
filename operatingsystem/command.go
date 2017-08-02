@@ -25,6 +25,14 @@ func execCommand(app string, arg ...string) {
 */
 
 func ExecCommand(command string) (int, string, string) {
+	return ExecCommandAllParams(command, true)
+}
+
+func ExecCommandWithoutErrCheck(command string) (int, string, string) {
+	return ExecCommandAllParams(command, false)
+}
+
+func ExecCommandAllParams(command string, checkError bool) (int, string, string) {
 
 	// run command
 	log.Debug("CMD: " + command)
@@ -33,7 +41,8 @@ func ExecCommand(command string) (int, string, string) {
 	cmd.Stdout = &stdoutBuf
 	cmd.Stderr = &stderrBuf
 	err := cmd.Run()
-	if err != nil {
+	if checkError && err != nil {
+		log.Info("baaem")
 		log.Fatal(err)
 	}
 
