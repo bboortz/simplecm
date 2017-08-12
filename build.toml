@@ -1,0 +1,5 @@
+AppName = "simplecm"
+AppVersion = "1"
+PkgName = "github.com/bboortz/simplecm"
+#LogLevel = "TRACE"
+

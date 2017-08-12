@@ -1,0 +1,4 @@
+package: github.com/bboortz/simplecm
+import:
+- package: github.com/op/go-logging
+  version: ^1.0.0
