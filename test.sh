@@ -3,4 +3,4 @@
 set -e
 set -u
 
-sudo ./out/scm
+./simplecm
