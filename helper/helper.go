@@ -1,8 +1,8 @@
 package helper
 
 import (
-	"../operatingsystem"
-	"../reflect"
+	"github.com/bboortz/simplecm/operatingsystem"
+	"github.com/bboortz/simplecm/reflect"
 	"github.com/op/go-logging"
 	"os"
 )
@@ -13,26 +13,23 @@ func init() {
 	logging.SetLevel(logging.INFO, "")
 }
 
+// IsUserPresent checks is the users exists on the os
 func IsUserPresent(username string) bool {
 	log.Debug("HELPER: " + reflect.GetFuncName())
 	exitCode, _, _ := operatingsystem.ExecCommand("id " + username)
-	if exitCode == 0 {
-		return true
-	}
 
-	return false
+	return exitCode == 0
 }
 
+// IsGroupPresent checks if the group exists on the os
 func IsGroupPresent(username string) bool {
 	log.Debug("HELPER: " + reflect.GetFuncName())
 	exitCode, _, _ := operatingsystem.ExecCommand("egrep --quiet ^" + username + ": /etc/group")
-	if exitCode == 0 {
-		return true
-	}
 
-	return false
+	return exitCode == 0
 }
 
+// FileExists checks if the file exists
 func FileExists(path string) bool {
 	log.Debug("HELPER: " + reflect.GetFuncName())
 	if _, err := os.Stat(path); err != nil {

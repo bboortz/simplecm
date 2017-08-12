@@ -1,9 +1,9 @@
 package main
 
 import (
-	"./helper"
-	"./task"
-	"./user"
+	"github.com/bboortz/simplecm/helper"
+	"github.com/bboortz/simplecm/task"
+	"github.com/bboortz/simplecm/user"
 )
 
 func main() {

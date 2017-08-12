@@ -7,31 +7,17 @@ import (
 	"syscall"
 )
 
-/*
-func execCommand(app string, arg ...string) {
-	log.Info("CMD: " + app + " " + strings.Join(arg[:], " "))
-	cmd := exec.Command(app, strings.Join(arg[:], " "))
-	stdoutStderr, err := cmd.CombinedOutput()
-
-	if err != nil {
-		log.Error(err.Error())
-		fmt.Printf("%s\n", string(stdoutStderr))
-		log.Error("exit program")
-		programExit(1)
-	}
-
-	fmt.Printf("%s\n", string(stdoutStderr))
-}
-*/
-
+// ExecCommand la
 func ExecCommand(command string) (int, string, string) {
 	return ExecCommandAllParams(command, true)
 }
 
+// ExecCommandWithoutErrCheck la
 func ExecCommandWithoutErrCheck(command string) (int, string, string) {
 	return ExecCommandAllParams(command, false)
 }
 
+// ExecCommandAllParams la
 func ExecCommandAllParams(command string, checkError bool) (int, string, string) {
 
 	// run command

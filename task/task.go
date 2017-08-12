@@ -1,9 +1,9 @@
 package task
 
 import (
-	"../helper"
-	"../operatingsystem"
-	"../reflect"
+	"github.com/bboortz/simplecm/helper"
+	"github.com/bboortz/simplecm/operatingsystem"
+	"github.com/bboortz/simplecm/reflect"
 	"github.com/op/go-logging"
 	"strings"
 )
@@ -15,6 +15,7 @@ func init() {
 	//	logging.SetLevel(logging.INFO, "")
 }
 
+// Task is the main interface for tasks
 type Task interface {
 	OsUpdate()
 	OsInstallPackages(packages ...string)
@@ -27,15 +28,16 @@ type Task interface {
 	LinkFile(oldpath string, newpath string)
 }
 
-type TaskBuilder interface {
+// Builder is the builder interface
+type Builder interface {
 	Build() Task
 }
 
 type taskBuilder struct {
-	os operatingsystem.OperatingSystem
+	//	os operatingsystem.OperatingSystem
 }
 
-func NewTask() TaskBuilder {
+func NewTask() Builder {
 	return &taskBuilder{}
 }
 

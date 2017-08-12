@@ -22,12 +22,10 @@ func handleInterrupt(intrptChSize int) {
 		syscall.SIGINT,
 		syscall.SIGIO,
 		syscall.SIGIOT,
-		syscall.SIGKILL,
 		syscall.SIGPIPE,
 		syscall.SIGPROF,
 		syscall.SIGQUIT,
 		syscall.SIGSEGV,
-		syscall.SIGSTOP,
 		syscall.SIGSYS,
 		syscall.SIGTERM,
 		syscall.SIGTRAP,
@@ -73,11 +71,13 @@ func handleInterrupt(intrptChSize int) {
 	}()
 }
 
+// ProgramExit exits the program and calls ProgramEnd
 func ProgramExit(exitCode int) {
 	globalExitCode = 1
 	ProgramEnd()
 }
 
+// ProgramEnd let the program end
 func ProgramEnd() {
 	log.Info("### program end ###")
 	log.Info(fmt.Sprintf("### with exit code %d  ###", globalExitCode))

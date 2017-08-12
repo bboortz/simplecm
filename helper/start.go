@@ -1,10 +1,11 @@
 package helper
 
 import (
-	"../logger"
-	"../user"
+	"github.com/bboortz/simplecm/logger"
+	"github.com/bboortz/simplecm/user"
 )
 
+// ProgramStart initialize the program
 func ProgramStart() {
 	// trap
 	handleInterrupt(2)

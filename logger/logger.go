@@ -5,6 +5,7 @@ import (
 	"os"
 )
 
+// InitLogger initializes the logger
 func InitLogger() {
 	// set logging format
 	var logFormat = logging.MustStringFormatter(

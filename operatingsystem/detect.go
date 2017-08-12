@@ -1,7 +1,7 @@
 package operatingsystem
 
 import (
-	"../reflect"
+	"github.com/bboortz/simplecm/reflect"
 	"os"
 	"runtime"
 )
@@ -18,11 +18,8 @@ func fileExists(path string) bool {
 
 func isLinux() bool {
 	log.Debug("HELPER: " + reflect.GetFuncName())
-	if runtime.GOOS == "linux" {
-		return true
-	}
 
-	return false
+	return runtime.GOOS == "linux"
 }
 
 func detectOS() string {

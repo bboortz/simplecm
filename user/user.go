@@ -1,8 +1,8 @@
 package user
 
 import (
-	"../operatingsystem"
-	"../types"
+	"github.com/bboortz/simplecm/operatingsystem"
+	"github.com/bboortz/simplecm/types"
 	"github.com/op/go-logging"
 	osuser "os/user"
 	"strconv"
