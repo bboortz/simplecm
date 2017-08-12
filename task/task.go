@@ -24,6 +24,7 @@ type Task interface {
 	ShowUser()
 	UserManage(username string, loginGroup string, groups []string)
 	HomeManageDirectory(username string)
+	LinkFile(oldpath string, newpath string)
 }
 
 type TaskBuilder interface {
@@ -159,4 +160,12 @@ func (o *task) HomeManageDirectory(username string) {
 	operatingsystem.ExecCommand("mkdir -p ~" + username + "/bin")
 	operatingsystem.ExecCommand("mkdir -p ~" + username + "/files")
 	operatingsystem.ExecCommand("mkdir -p ~" + username + "/progs")
+}
+
+func (o *task) LinkFile(oldpath string, newpath string) {
+	log.Info("TASK: " + reflect.GetFuncName())
+	err := operatingsystem.LinkFile(oldpath, newpath)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

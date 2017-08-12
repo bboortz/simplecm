@@ -36,6 +36,14 @@ func ChangeUser(uid int, gid int, groupids []int, path string) {
 	}
 }
 
+func LinkFile(oldpath string, newpath string) error {
+	if !fileExists(newpath) {
+		return syscall.Link(oldpath, newpath)
+	}
+
+	return nil
+}
+
 func setUserPrivileges(username string, groupname string, path string) {
 	user, err := osuser.Lookup(username)
 	if err != nil {

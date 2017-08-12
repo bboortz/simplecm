@@ -13,18 +13,26 @@ func main() {
 	var t = task.NewTask().Build()
 
 	t.OsInstallPackages(
+		"a2ps",
 		"bash",
+		"cups",
 		"dosbox",
 		"fail2ban",
+		"firefox",
+		"firefox-beta",
 		"git",
 		"gcc",
 		"gnutls",
 		"go",
+		"gtk3-print-backends",
+		"keepass",
+		"libgcrypt",
 		"libpulse",
 		"libreoffice-fresh",
 		"libreoffice-fresh-en-GB",
 		"libreoffice-fresh-de",
 		"lib32-gnutls",
+		"libxml2",
 		"lsof",
 		"make",
 		"mono",
@@ -35,6 +43,7 @@ func main() {
 		"q4wine",
 		"screen",
 		"strace",
+		"traceroute",
 		"tree",
 		"vim",
 		"wine",
@@ -44,12 +53,13 @@ func main() {
 		"vi")
 	t.OsUpdate()
 	t.OsCleanup()
+	t.LinkFile("/usr/bin/vim", "/usr/local/bin/vi")
 
 	t.TimeSync()
 
 	t.UserManage("anna", "anna", []string{"anna"})
-	t.UserManage("benni", "benni", []string{"benni"})
-	t.UserManage("userb", "userb", []string{"userb", "wheel"})
+	t.UserManage("benni", "benni", []string{"benni", "lp", "docker"})
+	t.UserManage("userb", "userb", []string{"userb", "lp", "docker", "wheel"})
 
 	user.NewUser().FromUser("userb").Build().BecomeUser()
 	t.ShowUser()
