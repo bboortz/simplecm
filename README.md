@@ -22,8 +22,8 @@ simplecm is a simple configuration management
 ## Support
 
 * OS
- * Arch Linux
- * Debian / Ubuntu (PLANNED)
+    * Arch Linux
+    * Debian / Ubuntu (PLANNED)
 
 ## Build Dependencies
 
