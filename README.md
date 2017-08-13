@@ -1,13 +1,16 @@
 # simplecm
 simplecm is a simple configuration management
 
+
 ## Build
 
 * ./build.sh
 
+
 ## Usage
 
 * sudo ./simplecm
+
 
 ## Features
 
@@ -19,22 +22,27 @@ simplecm is a simple configuration management
 * manage groups
 * create symlinks
 
+
 ## Support
 
 * OS
     * Arch Linux
     * Debian / Ubuntu (PLANNED)
 
+
 ## Build Dependencies
 
 These tools must be installed first
 
+* golang
 * docker
 * github.com/bboortz/go-build 
+
 
 ## Runtime Dependencies
 
 * github.com/bboortz/go-utils
+
 
 ## Architecture
 
@@ -47,4 +55,5 @@ task			start	exit	logger	reflect
 |	helper
 |	|
 command
+
 
